@@ -1,22 +1,42 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Box, Text, Heading } from "grommet";
 import { TextField } from "@material-ui/core";
 import theme from "../../theme";
 import Button from "./Button";
-
+import LoadingBlock from "./LoadingBlock";
 const { colors } = theme;
 
 const EmailBlock = () => {
+    const [isLoading, setLoading] = useState(true);
+
+    useEffect(() => {
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    });
+
+    const WrapperBox = ({ children }) => (
+        <Box
+          elevation={"large"}
+          width={"500px"}
+          round="8px"
+          background={colors.white}
+          pad={"large"}
+          gap={"small"}
+        >
+          {children}
+        </Box>
+      );
+  
   return (
-    <Box
-      elevation={"large"}
-      width={"500px"}
-      height={{ min: "max-content" }}
-      round="8px"
-      background={colors.white}
-      pad={"large"}
-      gap={"medium"}
-    >
+      <>
+      {isLoading && (
+        <WrapperBox>
+          <LoadingBlock />
+        </WrapperBox>
+      )}
+      {!isLoading && (
+        <WrapperBox>
       <Heading level={1} color={colors.black}>
         Become smarter in just 5 minutes
       </Heading>
@@ -46,7 +66,8 @@ const EmailBlock = () => {
       >
         Submit
       </Button>
-    </Box>
+    </WrapperBox>)}
+    </>
   );
 };
 
