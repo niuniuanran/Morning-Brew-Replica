@@ -1,35 +1,41 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import { Box, Text, Heading } from "grommet";
 import { TextField } from "@material-ui/core";
 import theme from "../../theme";
 import Button from "./Button";
 import LoadingBlock from "./LoadingBlock";
+import { useStore } from "./logic/store";
+import { useDispatchEmailFlow } from "./logic/flows";
+
 const { colors } = theme;
 
+const WrapperBox = ({ children }) => (
+  <Box
+    elevation={"large"}
+    width={"500px"}
+    round="8px"
+    background={colors.white}
+    pad={"large"}
+    gap={"small"}
+  >
+    {children}
+  </Box>
+);
+
 const EmailBlock = () => {
-    const [isLoading, setLoading] = useState(true);
+  const [isLoading, isProcessing] = useStore((state) => [
+    state.loading,
+    state.processing
+  ]);
 
-    useEffect(() => {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    });
+  const [content, currentButtonText] = useStore((state) => [
+    state.content,
+    state.currentButtonText
+  ]);
+  const dispatchEmailFlow = useDispatchEmailFlow();
 
-    const WrapperBox = ({ children }) => (
-        <Box
-          elevation={"large"}
-          width={"500px"}
-          round="8px"
-          background={colors.white}
-          pad={"large"}
-          gap={"small"}
-        >
-          {children}
-        </Box>
-      );
-  
   return (
-      <>
+    <>
       {isLoading && (
         <WrapperBox>
           <LoadingBlock />
@@ -37,36 +43,29 @@ const EmailBlock = () => {
       )}
       {!isLoading && (
         <WrapperBox>
-      <Heading level={1} color={colors.black}>
-        Become smarter in just 5 minutes
-      </Heading>
-      <Text size={"medium"}>
-        Get the daily email that makes reading the news actually enjoyable. Stay
-        informed and entertained, for free.
-      </Text>
-      <TextField
-        id="outlined-basic"
-        type={"email"}
-        label={"Enter your email"}
-        placeholder={"Enter your email"}
-        variant="outlined"
-      />
-      <Button
-        type="submit"
-        onClick={(e) => {
-          e.preventDefault();
-        }}
-        // disabled={isProcessing || !isValid}
-        background={colors.primary}
-        color={colors.white}
-        style={{
-          paddingTop: "1rem",
-          paddingBottom: "1rem"
-        }}
-      >
-        Submit
-      </Button>
-    </WrapperBox>)}
+          <Heading level={1} color={colors.black}>
+            {content.title}
+          </Heading>
+          <Text size={"medium"}>{content.subTitle}</Text>
+          <TextField {...content.input} />
+          <Button
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              dispatchEmailFlow();
+            }}
+            disabled={isProcessing}
+            background={colors.primary}
+            color={colors.white}
+            style={{
+              paddingTop: "16px",
+              paddingBottom: "16px"
+            }}
+          >
+            {currentButtonText}
+          </Button>
+         </WrapperBox>
+      )}
     </>
   );
 };
