@@ -1,4 +1,5 @@
 import { useStore } from "./store";
+import { content as fallbackContent } from "../fallback";
 
 const wait = async (time) =>
   new Promise((resolve) => setTimeout(() => resolve(true), time));
@@ -37,7 +38,7 @@ const useDispatchGetContentFlow = () => {
   ] = useStore((store) => [
     store.getContent,
     store.setContent,
-    sotre.setLoading,
+    store.setLoading,
     store.clearLoading
   ]);
 
