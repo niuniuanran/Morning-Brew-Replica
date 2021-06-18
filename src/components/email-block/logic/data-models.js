@@ -10,16 +10,16 @@ const initContentModel = (set) => ({
   currentButtonText: content.button?.states?.initial,
   setButtonText: (buttonText) =>
     set((state) => ({ ...state, currentButtonText: buttonText })),
-    getContent: async () => {
-      const payload = {
-        key: "content"
-      };
-      const content = await dispatchRecipe({
-        triggerId: RECIPES.LEADS_BLOCK,
-        payload
-      });
-      set((state) => ({ ...state, content }));
-    },
+  getContent: async () => {
+    const payload = {
+      key: "content"
+    };
+    const content = await dispatchRecipe({
+      triggerId: RECIPES.LEADS_BLOCK,
+      payload
+    });
+    set((state) => ({ ...state, content }));
+  },
   setContent: (content) => {
     set((state) => ({ ...state, content }));
   }

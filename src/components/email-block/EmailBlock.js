@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Text, Heading } from "grommet";
 import { TextField } from "@material-ui/core";
 import theme from "../../theme";
 import Button from "./Button";
 import LoadingBlock from "./LoadingBlock";
 import { useStore } from "./logic/store";
-import { useDispatchEmailFlow } from "./logic/flows";
+import { useDispatchEmailFlow, useDispatchGetContentFlow } from "./logic/flows";
 
 const { colors } = theme;
 
@@ -33,6 +33,8 @@ const EmailBlock = () => {
     state.currentButtonText
   ]);
   const dispatchEmailFlow = useDispatchEmailFlow();
+  const getContent=useDispatchGetContentFlow();
+  useEffect(()=>getContent(), [])
 
   return (
     <>

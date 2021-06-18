@@ -28,4 +28,29 @@ const useDispatchEmailFlow = () => {
   return dispatch;
 };
 
-export { useDispatchEmailFlow };
+const useDispatchGetContentFlow = () => {
+  const [
+    getContent, 
+    setContent,
+    setLoading,
+    clearLoading
+  ] = useStore((store) => [
+    store.getContent,
+    store.setContent,
+    sotre.setLoading,
+    store.clearLoading
+  ]);
+
+  const dispatch = async() => {
+    setLoading();
+    try {
+      await getContent();
+    } catch (error) {
+      setContent(fallbackContent);
+    }
+    clearLoading();
+  }
+  return dispatch;
+}
+
+export { useDispatchEmailFlow, useDispatchGetContentFlow };
